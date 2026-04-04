@@ -3,109 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>URBANAXIS | Sign In & Sign Up · Mobile/Desktop Ready</title>
+  <title>URBANAXIS | Pro Admin & Sell Platform</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script type="importmap">
-    { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
-  </script>
   <style>
     * { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { margin: 0; transition: background 0.3s ease; overflow-x: hidden; }
-    body.auth-bg { background: radial-gradient(circle at 20% 30%, #0a0a2a, #030318); }
-    body.logged-bg { background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover; background-position: center; background-attachment: fixed; }
-    #global-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-    .relative { z-index: 2; }
-    .bw-card, .bw-panel { background: #ffffff; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eef2f8; }
-    .btn-bw { background: #000000; color: white; border-radius: 2rem; padding: 0.6rem 1.5rem; font-weight: 600; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; }
-    .btn-bw:hover { background: #333; transform: scale(1.02); }
-    .btn-outline-bw { background: transparent; border: 1px solid #d0d5dd; border-radius: 2rem; padding: 0.5rem 1.2rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-outline-bw:hover { background: #f1f5f9; }
-    input, textarea, select { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 0.75rem 1rem; outline: none; font-size: 16px; width: 100%; }
-    input:focus, textarea:focus, select:focus { border-color: #000000; box-shadow: 0 0 0 2px rgba(0,0,0,0.1); }
+    body { margin: 0; overflow-x: hidden; background: #0a0a2a; }
+    .static-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;
+      z-index: 0;
+    }
+    .static-bg::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,0,0,0.75), rgba(0,0,0,0.5));
+      z-index: 1;
+    }
+    .relative-container { position: relative; z-index: 2; }
+    .auth-card {
+      background: rgba(10, 20, 35, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0,0,0,0.5);
+    }
     .form-input-icon { position: relative; margin-bottom: 1rem; }
-    .form-input-icon i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #c4b5fd; z-index: 1; font-size: 1rem; }
-    .form-input-icon input { padding-left: 2.8rem; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 1rem; width: 100%; }
-    .form-input-icon input::placeholder { color: #cbd5e1; }
-    .auth-card { background: rgba(10,20,35,0.88); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.25); border-radius: 2rem; padding: 1.8rem; transition: all 0.3s; }
-    .floating-shapes div { position: absolute; width: 20px; height: 20px; background: rgba(168,85,247,0.2); bottom: -150px; animation: float 25s linear infinite; border-radius: 50%; pointer-events: none; }
-    @keyframes float { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; } }
-    .nav-professional { background: rgba(255,255,255,0.98); border-radius: 1.2rem; padding: 0.75rem 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); backdrop-filter: blur(2px); }
-    .nav-link { background: transparent; color: #4b5563; padding: 0.5rem 1rem; border-radius: 2rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+    .form-input-icon i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #c4b5fd; z-index: 1; }
+    .form-input-icon input {
+      padding-left: 2.8rem;
+      background: rgba(0,0,0,0.65);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 1rem;
+      width: 100%;
+      font-size: 0.95rem;
+    }
+    .form-input-icon input:focus { border-color: #a855f7; box-shadow: 0 0 0 2px rgba(168,85,247,0.3); outline: none; }
+    .btn-gradient {
+      background: linear-gradient(105deg, #000000 0%, #1f1f2f 100%);
+      transition: transform 0.2s;
+      color: white;
+      font-weight: 600;
+      border-radius: 2rem;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+    }
+    .btn-gradient:hover { transform: scale(1.02); }
+    .btn-bw { background: #000000; color: white; border-radius: 2rem; padding: 0.5rem 1.2rem; font-weight: 600; transition: all 0.2s; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; }
+    .btn-bw:hover { background: #333; transform: scale(1.02); }
+    .btn-outline-bw { background: transparent; border: 1px solid #d0d5dd; border-radius: 2rem; padding: 0.4rem 1rem; font-weight: 500; cursor: pointer; }
+    .btn-outline-bw:hover { background: #f1f5f9; }
+    .nav-professional { background: rgba(255,255,255,0.96); border-radius: 1.2rem; padding: 0.7rem 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(2px); }
+    .nav-link { background: transparent; color: #4b5563; padding: 0.5rem 1rem; border-radius: 2rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
     .nav-link:hover { background: #f3f4f6; color: #000; }
     .nav-link.active { background: #000000; color: white; }
     .logout-btn { border: 1px solid #e5e7eb; color: #dc2626; }
     .logout-btn:hover { background: #fee2e2; color: #b91c1c; }
-    .logo-text { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #000 0%, #333 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero-office-img { width: 100%; height: 220px; background: url('https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover no-repeat; border-radius: 1.5rem; position: relative; margin-bottom: 1.5rem; }
-    .hero-overlay { background: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.3)); border-radius: 1.5rem; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white; padding: 1rem; text-align: center; }
-    .hero-overlay h2 { font-size: 2rem; font-weight: 800; }
+    .chat-bubble-user { background: #000000; color: white; border-radius: 1.5rem 1.5rem 0.5rem 1.5rem; padding: 0.7rem 1rem; max-width: 75%; word-break: break-word; }
+    .chat-bubble-other { background: #f1f5f9; color: #1f2937; border-radius: 1.5rem 1.5rem 1.5rem 0.5rem; border: 1px solid #e2e8f0; padding: 0.7rem 1rem; max-width: 75%; word-break: break-word; }
+    .unread-badge { background: #ef4444; color: white; border-radius: 9999px; padding: 0.15rem 0.5rem; font-size: 0.7rem; animation: pulse 1s infinite; margin-left: 0.5rem; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+    .chat-list-item { transition: all 0.2s; cursor: pointer; padding: 0.7rem; border-radius: 0.75rem; margin-bottom: 0.5rem; }
+    .chat-list-item.active { background: #e5e7eb; border-left: 3px solid #000; }
+    .chat-list-item:hover { background: #f3f4f6; }
+    .user-card { background: white; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; border: 1px solid #eef2f8; }
     .stage-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 2rem; font-size: 0.7rem; font-weight: 600; background: #eef2ff; color: #1e40af; }
-    .task-status { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 2rem; font-weight: 600; }
-    .status-pending { background: #fed7aa; color: #9b4d00; }
-    .status-inprogress { background: #bfdbfe; color: #1e40af; }
-    .status-completed { background: #c7e9c0; color: #166534; }
-    .user-card { background: #ffffff; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; border: 1px solid #eef2f8; }
-    .chat-bubble-user { background: #000000; color: white; border-radius: 1.5rem 1.5rem 0.5rem 1.5rem; padding: 0.75rem 1rem; max-width: 80%; word-wrap: break-word; }
-    .chat-bubble-admin { background: #f1f5f9; color: #1f2937; border-radius: 1.5rem 1.5rem 1.5rem 0.5rem; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; max-width: 80%; word-wrap: break-word; }
-    .unread-badge { background: #ef4444; color: white; border-radius: 9999px; padding: 0.15rem 0.5rem; font-size: 0.7rem; margin-left: 0.5rem; animation: pulse 1s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-    .chat-list-item { transition: all 0.2s; cursor: pointer; border-left: 3px solid transparent; padding: 0.75rem; border-radius: 0.75rem; }
-    .chat-list-item.active { border-left-color: #000; background: #f9fafb; }
-    .profile-detail-card { background: #f8fafc; border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 0.75rem; border-left: 3px solid #000; word-break: break-word; }
+    .hero-office-img { width: 100%; height: 240px; background: url('https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover no-repeat; border-radius: 1.5rem; margin-bottom: 1.5rem; position: relative; }
+    .hero-overlay { background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)); border-radius: 1.5rem; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white; }
+    .sample-website-preview { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 1rem; padding: 1rem; color: white; text-align: center; cursor: pointer; transition: transform 0.2s; }
+    .sample-website-preview:hover { transform: scale(1.02); }
+    .chat-tab { cursor: pointer; padding: 0.5rem 1rem; border-radius: 2rem; transition: all 0.2s; }
+    .chat-tab.active { background: #000; color: white; }
+    .company-brand { font-family: 'Playfair Display', serif; }
+    .product-card { background: white; border-radius: 1.25rem; overflow: hidden; transition: all 0.2s; border: 1px solid #eef2f8; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1); }
     @media (max-width: 768px) {
-      .container { padding-left: 1rem; padding-right: 1rem; }
-      .auth-card { padding: 1.2rem; }
-      .hero-overlay h2 { font-size: 1.5rem; }
-      .nav-link { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+      .auth-card { padding: 1.2rem; margin: 1rem; }
+      .nav-link { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
+      .chat-bubble-user, .chat-bubble-other { max-width: 85%; font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
-  <canvas id="global-canvas"></canvas>
-  <div id="app" class="relative container mx-auto px-3 md:px-6 py-4 md:py-6 max-w-7xl">
-    <div id="views-container"></div>
+  <div class="static-bg"></div>
+  <div class="relative-container min-h-screen flex flex-col">
+    <div id="app" class="container mx-auto px-3 md:px-6 py-4 md:py-6 flex-1">
+      <div id="views-container"></div>
+    </div>
   </div>
 
-  <script type="module">
-    import * as THREE from 'three';
-    
-    // ---------- Lightweight 3D Background ----------
-    const canvas = document.getElementById('global-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.5, 9);
-    const coreGeo = new THREE.SphereGeometry(0.8, 48, 48);
-    const coreMat = new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x4c1d95, emissiveIntensity: 0.4 });
-    const core = new THREE.Mesh(coreGeo, coreMat); scene.add(core);
-    const ringPts = 200; const ringGeo = new THREE.BufferGeometry(); const ringPos = new Float32Array(ringPts*3);
-    for(let i=0;i<ringPts;i++){ const a=(i/ringPts)*Math.PI*2; const r=1.6; ringPos[i*3]=Math.cos(a)*r; ringPos[i*3+1]=Math.sin(a)*r*0.4; ringPos[i*3+2]=Math.sin(a)*r*0.6; }
-    ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos,3));
-    const ringPoints = new THREE.Points(ringGeo, new THREE.PointsMaterial({ color: 0xbf7af0, size:0.04, blending: THREE.AdditiveBlending })); scene.add(ringPoints);
-    const pCount=1200; const pGeo=new THREE.BufferGeometry(); const pPos=new Float32Array(pCount*3);
-    for(let i=0;i<pCount;i++){ const rad=3+Math.random()*4; const theta=Math.random()*Math.PI*2; const phi=Math.acos(2*Math.random()-1); pPos[i*3]=rad*Math.sin(phi)*Math.cos(theta); pPos[i*3+1]=rad*Math.sin(phi)*Math.sin(theta)*0.8; pPos[i*3+2]=rad*Math.cos(phi)*1.2; }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos,3));
-    const particlesField = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xa78bfa, size:0.05, transparent: true, blending: THREE.AdditiveBlending })); scene.add(particlesField);
-    const ambient = new THREE.AmbientLight(0x22223b); scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8); dirLight.position.set(2,5,3); scene.add(dirLight);
-    let time = 0;
-    function animate3D(){ requestAnimationFrame(animate3D); time+=0.008; core.rotation.y=time*0.5; ringPoints.rotation.y=time*0.3; particlesField.rotation.y=time*0.05; renderer.render(scene,camera); }
-    animate3D();
-    window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
-    function setAuthBackground(showAuth){ if(showAuth){ document.body.classList.add('auth-bg'); document.body.classList.remove('logged-bg'); canvas.style.display='block'; } else { document.body.classList.add('logged-bg'); document.body.classList.remove('auth-bg'); canvas.style.display='block'; } }
-    
-    // ---------- Data Layer (Users, Messages, Tasks) ----------
-    let users = [], messages = [], tasks = [];
+  <script>
+    // ---------- DATA LAYER (extended with STORE PRODUCTS) ----------
+    let users = [], messages = [], tasks = [], products = [];
     function saveUsers() { localStorage.setItem('urbanaxis_users', JSON.stringify(users)); }
     function saveMessages() { localStorage.setItem('urbanaxis_messages', JSON.stringify(messages)); }
     function saveTasks() { localStorage.setItem('urbanaxis_tasks', JSON.stringify(tasks)); }
+    function saveProducts() { localStorage.setItem('urbanaxis_products', JSON.stringify(products)); }
+    
     function loadTasks() { const stored = localStorage.getItem('urbanaxis_tasks'); tasks = stored ? JSON.parse(stored) : []; }
+    function loadProducts() { const stored = localStorage.getItem('urbanaxis_products'); products = stored ? JSON.parse(stored) : []; }
     function createTask(task) { tasks.push({ ...task, id: Date.now().toString(), createdAt: new Date().toISOString() }); saveTasks(); }
     function updateTask(taskId, updates) { const idx = tasks.findIndex(t => t.id === taskId); if(idx !== -1) { tasks[idx] = { ...tasks[idx], ...updates }; saveTasks(); } }
     function getTasksForUser(userEmail) { return tasks.filter(t => t.assignedTo === userEmail); }
+    
+    // PRODUCT CRUD (admin sell page management)
+    function addProduct(product) { 
+      const newProduct = { ...product, id: Date.now().toString(), createdAt: new Date().toISOString() }; 
+      products.push(newProduct); 
+      saveProducts(); 
+      return newProduct;
+    }
+    function updateProduct(productId, updates) { 
+      const idx = products.findIndex(p => p.id === productId); 
+      if(idx !== -1) { products[idx] = { ...products[idx], ...updates }; saveProducts(); return true; }
+      return false;
+    }
+    function deleteProduct(productId) { 
+      products = products.filter(p => p.id !== productId); 
+      saveProducts(); 
+    }
     
     function loadData() {
       const storedUsers = localStorage.getItem('urbanaxis_users');
@@ -113,40 +140,45 @@
       users = storedUsers ? JSON.parse(storedUsers) : [];
       messages = storedMessages ? JSON.parse(storedMessages) : [];
       users = users.map(u => { if(!u.stage && u.role !== 'admin') u.stage = 'interested'; return u; });
-      // Predefined admins
-      const admin1 = { name: "Atharv Dev", email: "bulkundeatharv407@gmail.com", password: btoa("urbanaxisceoatharv"), role: "admin", stage: null, createdAt: new Date().toISOString(), phone: "+91 98765 43210", location: "Mumbai, India", business: "CEO" };
-      const admin2 = { name: "Shivraj Singh", email: "shivraj@gmail.com", password: btoa("urbanaxisceoshiv"), role: "admin", stage: null, createdAt: new Date().toISOString(), phone: "+91 87654 32109", location: "Delhi, India", business: "Co-Founder" };
+      // default admins
+      const admin1 = { name: "Atharv Dev", email: "bulkundeatharv407@gmail.com", password: btoa("urbanaxisceoatharv"), role: "admin", stage: null, createdAt: new Date().toISOString(), phone: "+91 98765 43210", location: "Mumbai, India", avatar: "👨‍💼" };
+      const admin2 = { name: "Shivraj Singh", email: "shivraj@gmail.com", password: btoa("urbanaxisceoshiv"), role: "admin", stage: null, createdAt: new Date().toISOString(), phone: "+91 87654 32109", location: "Delhi, India", avatar: "👨‍💼" };
       if (!users.find(u => u.email === admin1.email)) users.push(admin1);
       if (!users.find(u => u.email === admin2.email)) users.push(admin2);
-      // Demo users
       if (!users.find(u => u.email === "sarah@urbanaxis.com")) {
-        users.push({ name: "Sarah Johnson", email: "sarah@urbanaxis.com", password: btoa("sarah123"), role: "user", stage: "interested", createdAt: new Date().toISOString(), phone: "+1 555 123 4567", location: "New York, USA", business: "Coffee Shop" });
+        users.push({ name: "Sarah Johnson", email: "sarah@urbanaxis.com", password: btoa("sarah123"), role: "user", stage: "interested", createdAt: new Date().toISOString(), phone: "+1 555 123 4567", location: "New York, USA", avatar: "👩‍🍳" });
       }
-      saveUsers(); loadTasks();
+      if (!users.find(u => u.email === "mike@urbanaxis.com")) {
+        users.push({ name: "Mike Chen", email: "mike@urbanaxis.com", password: btoa("mike123"), role: "user", stage: "working", createdAt: new Date().toISOString(), phone: "+1 555 987 6543", location: "San Francisco, USA", avatar: "👨‍🍳" });
+      }
+      saveUsers(); loadTasks(); loadProducts();
+      // Initialize sample products for sell page if empty
+      if(products.length === 0) {
+        addProduct({ name: "URBANAXIS Business Suite", description: "Complete digital transformation toolkit, AI analytics & CRM integration.", price: "$299/mo", iconClass: "fas fa-chart-line", active: true });
+        addProduct({ name: "Elite Consulting Package", description: "1-on-1 strategy session with senior architects, roadmap design.", price: "$1,499", iconClass: "fas fa-handshake", active: true });
+        addProduct({ name: "WebApp Blueprint Pro", description: "Fully responsive web application template + 3 months support.", price: "$899", iconClass: "fas fa-code", active: true });
+        addProduct({ name: "24/7 Priority Support", description: "Dedicated support channel, SLA guaranteed.", price: "$149/mo", iconClass: "fas fa-headset", active: true });
+      }
     }
     function hashPassword(pwd) { return btoa(pwd); }
     function verifyPassword(plain, hashed) { return btoa(plain) === hashed; }
     function findUserByEmail(email) { return users.find(u => u.email === email); }
-    
-    // SIGNUP with email, phone, password, confirm password
     function createUserWithDetails(name, email, phone, password) {
-      if (findUserByEmail(email)) throw new Error("User already exists with this email");
-      const newUser = { 
-        name, email, phone, password: hashPassword(password), role: "user", 
-        stage: 'interested', createdAt: new Date().toISOString(), location: "", business: "" 
-      };
+      if (findUserByEmail(email)) throw new Error("User already exists");
+      const newUser = { name, email, phone, password: hashPassword(password), role: "user", stage: 'interested', createdAt: new Date().toISOString(), location: "", business: "", avatar: "👤" };
       users.push(newUser); saveUsers(); return newUser;
     }
-    
     function authenticate(email, password) {
       const user = findUserByEmail(email);
-      if (!user || !verifyPassword(password, user.password)) throw new Error("Invalid email or password");
+      if (!user || !verifyPassword(password, user.password)) throw new Error("Invalid credentials");
       return { ...user, token: "mock-jwt-" + Date.now() };
     }
-    function getAllUsersExcludingAdmins() { return users.filter(u => u.role === 'user'); }
-    function getAdminEmails() { return users.filter(u => u.role === 'admin').map(a => a.email); }
+    function getAllUsers() { return users.filter(u => u.role === 'user'); }
+    function getAllAdmins() { return users.filter(u => u.role === 'admin'); }
+    
+    // CHAT
     function sendMessage(senderId, receiverId, messageText) { 
-      if(!messageText || !messageText.trim()) return null;
+      if(!messageText?.trim()) return null;
       const newMsg = { senderId, receiverId, message: messageText.trim(), timestamp: new Date().toISOString(), read: false, id: Date.now().toString() }; 
       messages.push(newMsg); saveMessages(); return newMsg; 
     }
@@ -163,215 +195,219 @@
     }
     function updateUserStage(email, newStage) { const user = findUserByEmail(email); if(user && user.role !== 'admin') { user.stage = newStage; saveUsers(); } }
     function updateUserProfile(email, updates) { const user = findUserByEmail(email); if(user) { Object.assign(user, updates); saveUsers(); } }
+    
+    // PRODUCT INQUIRY: sends message to all admins
+    function sendProductInquiry(product, userName, userEmail) {
+      const admins = getAllAdmins();
+      const inquiryMsg = `🛍️ PRODUCT INQUIRY from ${userName} (${userEmail}):\n📦 ${product.name}\n💰 ${product.price}\n💬 "I'm interested in purchasing this solution. Please reach out."`;
+      admins.forEach(admin => {
+        sendMessage(userEmail, admin.email, inquiryMsg);
+      });
+      alert(`✅ Your inquiry about "${product.name}" has been sent to our admin team. They will contact you via Live Chat.`);
+    }
+    
     loadData();
+    let currentUser = null, activeChatPartner = null, currentView = 'login', chatPollInterval = null, chatType = 'admin';
     
-    let currentUser = null, activeChatPartner = null, currentView = 'login', chatPollInterval = null;
-    
-    // ========== SIGN IN & SIGN UP PAGE (Combined with Toggle) ==========
+    // ========== AUTH PAGE ==========
     function renderAuthPage() {
-      setAuthBackground(true);
       const container = document.getElementById('views-container');
       container.innerHTML = `
-        <div class="min-h-[85vh] flex items-center justify-center">
-          <div class="floating-shapes" id="floatingShapes"></div>
-          <div class="max-w-5xl w-full grid lg:grid-cols-2 gap-6">
-            <!-- Left Side: Branding -->
-            <div class="hidden lg:block">
-              <img src="https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&w=600" class="rounded-2xl shadow-2xl h-72 w-full object-cover" alt="Office">
-              <div class="mt-4 text-center text-white"><h1 class="text-4xl font-extrabold">URBANAXIS</h1><p class="text-purple-200 mt-1">Real-time Collaboration Suite</p></div>
+        <div class="min-h-[85vh] flex items-center justify-center py-6">
+          <div class="max-w-5xl w-full grid lg:grid-cols-2 gap-6 items-center">
+            <div class="hidden lg:block text-center">
+              <div class="rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black/30 backdrop-blur-sm p-8">
+                <div class="mb-6"><i class="fas fa-store text-6xl text-purple-300 mb-4"></i>
+                  <h1 class="text-7xl font-bold company-brand bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">URBANAXIS</h1>
+                  <div class="w-24 h-0.5 bg-gradient-to-r from-purple-400 to-transparent mx-auto my-4"></div>
+                  <p class="text-purple-100 text-lg font-light tracking-wide">Empower Your Business • Sell & Scale</p>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mt-6"><div class="text-center"><i class="fas fa-cart-shopping text-2xl text-purple-300"></i><p class="text-xs text-gray-200 mt-1">Sell Page</p></div><div class="text-center"><i class="fas fa-comments text-2xl text-purple-300"></i><p class="text-xs text-gray-200 mt-1">Live Chat</p></div><div class="text-center"><i class="fas fa-chart-line text-2xl text-purple-300"></i><p class="text-xs text-gray-200 mt-1">Analytics</p></div></div>
+              </div>
             </div>
-            <!-- Right Side: Toggle Forms -->
-            <div class="auth-card">
+            <div class="auth-card p-6 md:p-8">
               <div class="flex gap-2 mb-5 border-b border-white/20 pb-2">
                 <button id="showSignInBtn" class="flex-1 py-2 text-white font-semibold rounded-xl transition ${!window._showSignup ? 'bg-white/20' : ''}">Sign In</button>
                 <button id="showSignUpBtn" class="flex-1 py-2 text-white font-semibold rounded-xl transition ${window._showSignup ? 'bg-white/20' : ''}">Create Account</button>
               </div>
-              <!-- Sign In Form -->
               <div id="signinFormContainer" style="${window._showSignup ? 'display:none' : 'display:block'}">
-                <form id="signinForm">
-                  <div class="form-input-icon"><i class="fas fa-envelope"></i><input type="email" id="loginEmail" placeholder="Email address" required></div>
-                  <div class="form-input-icon"><i class="fas fa-lock"></i><input type="password" id="loginPassword" placeholder="Password" required></div>
-                  <button type="submit" class="btn-bw w-full py-2.5 mt-2">Sign In →</button>
-                </form>
+                <form id="signinForm"><div class="form-input-icon"><i class="fas fa-envelope"></i><input type="email" id="loginEmail" placeholder="Email address" required></div>
+                <div class="form-input-icon"><i class="fas fa-lock"></i><input type="password" id="loginPassword" placeholder="Password" required></div>
+                <button type="submit" class="btn-gradient w-full py-2.5 mt-2">Sign In →</button></form>
                 <p class="text-center text-gray-300 text-xs mt-4">Demo: bulkundeatharv407@gmail.com / urbanaxisceoatharv</p>
               </div>
-              <!-- Sign Up Form (with Email, Phone, Password, Confirm Password) -->
               <div id="signupFormContainer" style="${window._showSignup ? 'display:block' : 'display:none'}">
-                <form id="signupForm">
-                  <div class="form-input-icon"><i class="fas fa-user"></i><input type="text" id="signupName" placeholder="Full Name" required></div>
-                  <div class="form-input-icon"><i class="fas fa-envelope"></i><input type="email" id="signupEmail" placeholder="Email address" required></div>
-                  <div class="form-input-icon"><i class="fas fa-phone"></i><input type="tel" id="signupPhone" placeholder="Phone Number" required></div>
-                  <div class="form-input-icon"><i class="fas fa-lock"></i><input type="password" id="signupPassword" placeholder="Password (min 6 characters)" required></div>
-                  <div class="form-input-icon"><i class="fas fa-check-circle"></i><input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required></div>
-                  <button type="submit" class="btn-bw w-full py-2.5 mt-2">Create Account →</button>
-                </form>
-                <p class="text-center text-gray-300 text-xs mt-3">Join URBANAXIS and start collaborating</p>
+                <form id="signupForm"><div class="form-input-icon"><i class="fas fa-user"></i><input type="text" id="signupName" placeholder="Full Name" required></div>
+                <div class="form-input-icon"><i class="fas fa-envelope"></i><input type="email" id="signupEmail" placeholder="Email address" required></div>
+                <div class="form-input-icon"><i class="fas fa-phone"></i><input type="tel" id="signupPhone" placeholder="Phone Number" required></div>
+                <div class="form-input-icon"><i class="fas fa-lock"></i><input type="password" id="signupPassword" placeholder="Password (min 6)" required></div>
+                <div class="form-input-icon"><i class="fas fa-check-circle"></i><input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required></div>
+                <button type="submit" class="btn-gradient w-full py-2.5 mt-2">Create Account →</button></form>
               </div>
             </div>
           </div>
         </div>`;
-      
-      // Floating shapes
-      const shapesContainer = document.getElementById('floatingShapes');
-      for(let i=0;i<20;i++){ const d=document.createElement('div'); d.style.width=Math.random()*30+10+'px'; d.style.height=d.style.width; d.style.left=Math.random()*100+'%'; d.style.animationDuration=Math.random()*18+12+'s'; d.style.animationDelay=Math.random()*8+'s'; d.style.background=`rgba(168,85,247,${Math.random()*0.25+0.1})`; shapesContainer.appendChild(d); }
-      
-      // Toggle handlers
       let showSignup = window._showSignup || false;
-      const signInContainer = document.getElementById('signinFormContainer');
-      const signUpContainer = document.getElementById('signupFormContainer');
-      const showSignInBtn = document.getElementById('showSignInBtn');
-      const showSignUpBtn = document.getElementById('showSignUpBtn');
-      
-      function setActiveTab(isSignup) {
-        showSignup = isSignup;
-        if(signInContainer) signInContainer.style.display = isSignup ? 'none' : 'block';
-        if(signUpContainer) signUpContainer.style.display = isSignup ? 'block' : 'none';
-        if(showSignInBtn) showSignInBtn.className = `flex-1 py-2 text-white font-semibold rounded-xl transition ${!isSignup ? 'bg-white/20' : ''}`;
-        if(showSignUpBtn) showSignUpBtn.className = `flex-1 py-2 text-white font-semibold rounded-xl transition ${isSignup ? 'bg-white/20' : ''}`;
-        window._showSignup = isSignup;
-      }
-      
-      showSignInBtn?.addEventListener('click', () => setActiveTab(false));
-      showSignUpBtn?.addEventListener('click', () => setActiveTab(true));
-      
-      // Sign In Handler
-      document.getElementById('signinForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        try {
-          const authUser = authenticate(email, password);
-          currentUser = authUser;
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          setView(currentUser.role === 'admin' ? 'adminDashboard' : 'userDashboard');
-        } catch(err) { alert(err.message); }
-      });
-      
-      // Sign Up Handler with validation (Email, Phone, Password, Confirm)
-      document.getElementById('signupForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('signupName').value.trim();
-        const email = document.getElementById('signupEmail').value.trim();
-        const phone = document.getElementById('signupPhone').value.trim();
-        const password = document.getElementById('signupPassword').value;
-        const confirmPassword = document.getElementById('signupConfirmPassword').value;
-        
-        if(!name || !email || !phone || !password) { alert("Please fill all fields"); return; }
-        if(password.length < 6) { alert("Password must be at least 6 characters"); return; }
-        if(password !== confirmPassword) { alert("Passwords do not match"); return; }
-        if(!/^\d{10,15}$/.test(phone.replace(/[\s\-\(\)\+]/g, '')) && !phone.includes('+')) {
-          if(!confirm("Phone number should be valid. Continue anyway?")) return;
-        }
-        try {
-          const newUser = createUserWithDetails(name, email, phone, password);
-          alert("Account created successfully! Please sign in.");
-          // Auto fill login form
-          document.getElementById('loginEmail').value = email;
-          document.getElementById('loginPassword').value = '';
-          setActiveTab(false);
-        } catch(err) { alert(err.message); }
-      });
+      const signInDiv = document.getElementById('signinFormContainer');
+      const signUpDiv = document.getElementById('signupFormContainer');
+      const signInBtn = document.getElementById('showSignInBtn');
+      const signUpBtn = document.getElementById('showSignUpBtn');
+      function setTab(isSignup) { showSignup = isSignup; window._showSignup = isSignup; if(signInDiv) signInDiv.style.display = isSignup ? 'none' : 'block'; if(signUpDiv) signUpDiv.style.display = isSignup ? 'block' : 'none'; if(signInBtn) signInBtn.className = `flex-1 py-2 text-white font-semibold rounded-xl transition ${!isSignup ? 'bg-white/20' : ''}`; if(signUpBtn) signUpBtn.className = `flex-1 py-2 text-white font-semibold rounded-xl transition ${isSignup ? 'bg-white/20' : ''}`; }
+      signInBtn?.addEventListener('click', () => setTab(false));
+      signUpBtn?.addEventListener('click', () => setTab(true));
+      document.getElementById('signinForm')?.addEventListener('submit', (e) => { e.preventDefault(); const email = document.getElementById('loginEmail').value.trim(); const pwd = document.getElementById('loginPassword').value; try { const authUser = authenticate(email, pwd); currentUser = authUser; localStorage.setItem('currentUser', JSON.stringify(currentUser)); setView(currentUser.role === 'admin' ? 'adminDashboard' : 'userDashboard'); } catch(err) { alert(err.message); } });
+      document.getElementById('signupForm')?.addEventListener('submit', (e) => { e.preventDefault(); const name = document.getElementById('signupName').value.trim(); const email = document.getElementById('signupEmail').value.trim(); const phone = document.getElementById('signupPhone').value.trim(); const pwd = document.getElementById('signupPassword').value; const confirm = document.getElementById('signupConfirmPassword').value; if(!name || !email || !phone || !pwd) { alert("All fields required"); return; } if(pwd.length < 6) { alert("Password min 6 characters"); return; } if(pwd !== confirm) { alert("Passwords do not match"); return; } try { createUserWithDetails(name, email, phone, pwd); alert("Account created! Please sign in."); document.getElementById('loginEmail').value = email; setTab(false); } catch(err) { alert(err.message); } });
     }
-    
-    // ========== Simplified Dashboard & Chat (Mobile/PC friendly) ==========
-    function renderLogo() { return `<div class="flex items-center gap-2"><div class="w-8 h-8 bg-black rounded-xl flex items-center justify-center"><i class="fas fa-chart-line text-white text-sm"></i></div><div><div class="logo-text text-lg font-black">URBANAXIS</div></div></div>`; }
     
     function renderNav() {
       if (!currentUser) return '';
       const isAdmin = currentUser.role === 'admin';
-      const activeMap = { userDashboard:'dashboard', chatView:'chat', profileView:'profile', adminDashboard:'adminDash', taskManager:'tasks' };
-      const activeKey = activeMap[currentView] || (isAdmin ? 'adminDash' : 'dashboard');
-      const links = isAdmin ? [
-        { key:'adminDash', icon:'fas fa-chart-line', label:'Dashboard', view:'adminDashboard' },
-        { key:'tasks', icon:'fas fa-tasks', label:'Tasks', view:'taskManager' },
-        { key:'chat', icon:'fas fa-comment-dots', label:'Chat', view:'chatView' },
-        { key:'profile', icon:'fas fa-id-card', label:'Profile', view:'profileView' }
-      ] : [
-        { key:'dashboard', icon:'fas fa-home', label:'Home', view:'userDashboard' },
-        { key:'chat', icon:'fas fa-comments', label:'Chat', view:'chatView' },
-        { key:'profile', icon:'fas fa-user', label:'Profile', view:'profileView' }
-      ];
-      return `<div class="nav-professional flex flex-wrap justify-between items-center gap-3 mb-5">${renderLogo()}<div class="flex gap-1 flex-wrap">${links.map(l => `<button data-nav="${l.view}" class="nav-link ${activeKey === l.key ? 'active' : ''}"><i class="${l.icon}"></i> <span class="hidden sm:inline">${l.label}</span></button>`).join('')}<button id="logoutBtn" class="nav-link logout-btn"><i class="fas fa-sign-out-alt"></i> <span class="hidden sm:inline">Logout</span></button></div></div>`;
+      let links = [];
+      if(isAdmin) {
+        links = [
+          { icon:'fas fa-chart-line', label:'Dashboard', view:'adminDashboard' },
+          { icon:'fas fa-tasks', label:'Tasks', view:'taskManager' },
+          { icon:'fas fa-store', label:'Manage Store', view:'storeManager' },
+          { icon:'fas fa-comment-dots', label:'Live Chat', view:'chatView' },
+          { icon:'fas fa-id-card', label:'Profile', view:'profileView' }
+        ];
+      } else {
+        links = [
+          { icon:'fas fa-home', label:'Home', view:'userDashboard' },
+          { icon:'fas fa-store', label:'Sell Page', view:'userStore' },
+          { icon:'fas fa-comments', label:'Live Chat', view:'chatView' },
+          { icon:'fas fa-user', label:'Profile', view:'profileView' }
+        ];
+      }
+      return `<div class="nav-professional flex flex-wrap justify-between items-center gap-3 mb-5"><div class="flex items-center gap-2"><div class="w-8 h-8 bg-black rounded-xl flex items-center justify-center"><i class="fas fa-chart-line text-white text-sm"></i></div><span class="font-black text-lg company-brand">URBANAXIS</span></div><div class="flex gap-1 flex-wrap">${links.map(l => `<button data-nav="${l.view}" class="nav-link"><i class="${l.icon}"></i> ${l.label}</button>`).join('')}<button id="logoutBtn" class="nav-link logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div>`;
     }
     
-    // Live Chat View (Responsive)
-    function renderChatView() {
-      const isAdmin = currentUser.role === 'admin';
-      let partners = isAdmin ? getAllUsersExcludingAdmins() : getAdminEmails().map(em => findUserByEmail(em)).filter(Boolean);
-      if(!activeChatPartner && partners.length) activeChatPartner = partners[0].email;
+    // ========== USER STORE (SELL PAGE) ==========
+    function renderUserStore() {
+      const activeProducts = products.filter(p => p.active !== false);
       const container = document.getElementById('views-container');
       container.innerHTML = renderNav() + `
-        <div class="bw-card p-3 md:p-5 flex flex-col md:flex-row gap-4 h-auto md:h-[70vh]">
-          <div class="md:w-1/3 bw-panel p-2 rounded-2xl overflow-y-auto max-h-48 md:max-h-full">
-            <h3 class="font-bold mb-2 text-gray-900 text-sm"><i class="fas fa-users mr-2"></i>${isAdmin ? 'Customers' : 'Support'}</h3>
-            ${partners.map(p => { const unread = getUnreadCount(currentUser.email, p.email); return `<div data-chat-partner="${p.email}" class="chat-list-item flex justify-between items-center ${activeChatPartner === p.email ? 'active bg-gray-100' : 'bg-gray-50'}"><div><i class="fas fa-user-circle mr-2"></i><span class="font-medium text-sm">${p.name}</span><div class="text-xs text-gray-400 truncate">${p.email}</div></div>${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ''}</div>`; }).join('')}
+        <div class="max-w-6xl mx-auto">
+          <div class="hero-office-img mb-4"><div class="hero-overlay"><h2 class="text-4xl font-bold company-brand">URBANAXIS Marketplace</h2><p class="text-lg">Premium solutions to accelerate your business</p></div></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${activeProducts.map(p => `
+              <div class="product-card p-5 flex flex-col h-full">
+                <div class="text-4xl mb-3 text-purple-700"><i class="${p.iconClass || 'fas fa-box'}"></i></div>
+                <h3 class="text-xl font-bold">${escapeHtml(p.name)}</h3>
+                <p class="text-gray-500 text-sm mt-1 flex-1">${escapeHtml(p.description)}</p>
+                <div class="mt-4 flex justify-between items-center"><span class="text-2xl font-black text-gray-900">${p.price}</span><button data-product='${JSON.stringify(p).replace(/'/g, "&#39;")}' class="inquire-product btn-bw text-sm py-2 px-4"><i class="fas fa-paper-plane"></i> Inquire Now</button></div>
+              </div>
+            `).join('')}
+            ${activeProducts.length === 0 ? '<div class="col-span-full text-center p-10 bg-white rounded-xl">✨ New products coming soon. Contact admin for custom solutions.</div>' : ''}
           </div>
-          <div class="md:w-2/3 flex flex-col bw-panel p-3 rounded-2xl h-[55vh] md:h-full">
-            <div class="pb-2 border-b mb-2 flex justify-between"><span class="text-sm">Chat with <span id="chatPartnerName" class="font-bold">${activeChatPartner ? (findUserByEmail(activeChatPartner)?.name || activeChatPartner) : 'Select'}</span></span><span class="text-xs text-green-600"><i class="fas fa-circle"></i> Live</span></div>
-            <div id="chatMessagesArea" class="flex-1 overflow-y-auto space-y-2 p-2" style="min-height: 250px;"></div>
-            <div class="flex gap-2 mt-3"><input type="text" id="messageInput" placeholder="Type message..." class="flex-1 text-sm" autocomplete="off"><button id="sendMsgBtn" class="btn-bw text-sm px-3 py-2"><i class="fas fa-paper-plane"></i></button></div>
-          </div>
+          <div class="mt-8 text-center text-sm text-gray-500 italic">💡 Click "Inquire Now" — our team will reach you via Live Chat instantly.</div>
         </div>`;
-      attachNavEvents();
-      document.querySelectorAll('[data-chat-partner]').forEach(el => { el.addEventListener('click', () => { activeChatPartner = el.getAttribute('data-chat-partner'); markMessagesAsRead(currentUser.email, activeChatPartner); renderChatView(); }); });
-      function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
-      function loadMessages() { if(!activeChatPartner) return; const msgs = getConversation(currentUser.email, activeChatPartner); const area = document.getElementById('chatMessagesArea'); const partnerName = findUserByEmail(activeChatPartner)?.name || activeChatPartner; if(document.getElementById('chatPartnerName')) document.getElementById('chatPartnerName').innerText = partnerName; if(area) { area.innerHTML = msgs.map(m => { const isOwn = m.senderId === currentUser.email; const time = new Date(m.timestamp).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }); return `<div class="flex ${isOwn ? 'justify-end' : 'justify-start'}"><div class="${isOwn ? 'chat-bubble-user' : 'chat-bubble-admin'}"><div class="text-sm">${escapeHtml(m.message)}</div><div class="text-[10px] opacity-70 mt-1">${time}</div></div></div>`; }).join(''); area.scrollTop = area.scrollHeight; } if(activeChatPartner) markMessagesAsRead(currentUser.email, activeChatPartner); }
-      document.getElementById('sendMsgBtn')?.addEventListener('click', () => { const inp = document.getElementById('messageInput'); if(inp?.value.trim() && activeChatPartner) { sendMessage(currentUser.email, activeChatPartner, inp.value); inp.value = ''; loadMessages(); } });
-      document.getElementById('messageInput')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') document.getElementById('sendMsgBtn')?.click(); });
-      loadMessages(); if(chatPollInterval) clearInterval(chatPollInterval); chatPollInterval = setInterval(() => { if(currentView === 'chatView') loadMessages(); }, 1800);
+      attachEvents();
+      document.querySelectorAll('.inquire-product').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const prodData = JSON.parse(btn.getAttribute('data-product'));
+          sendProductInquiry(prodData, currentUser.name, currentUser.email);
+        });
+      });
+    }
+    
+    // ========== ADMIN STORE MANAGER (SELL PAGE CONTROL) ==========
+    function renderStoreManager() {
+      const container = document.getElementById('views-container');
+      container.innerHTML = renderNav() + `
+        <div class="max-w-5xl mx-auto">
+          <div class="flex justify-between items-center mb-4 flex-wrap"><h2 class="text-2xl font-bold">🛍️ Store Manager — Control Sell Page</h2><button id="addProductBtn" class="btn-bw"><i class="fas fa-plus"></i> Add Product</button></div>
+          <div class="bg-white rounded-xl p-5 shadow-sm mb-6"><h3 class="font-semibold mb-2">➕ Quick Add Product</h3><div class="grid grid-cols-1 md:grid-cols-4 gap-2"><input type="text" id="prodName" placeholder="Name" class="border rounded-lg p-2"><input type="text" id="prodDesc" placeholder="Description" class="border rounded-lg p-2"><input type="text" id="prodPrice" placeholder="Price (e.g. $99)" class="border rounded-lg p-2"><input type="text" id="prodIcon" placeholder="Icon class (fas fa-star)" class="border rounded-lg p-2"></div><button id="quickAddProduct" class="btn-bw mt-3 w-full md:w-auto">Create Product</button></div>
+          <div class="space-y-3">${products.map(p => `
+            <div class="bg-white rounded-xl p-4 flex flex-wrap justify-between items-center gap-3 border">
+              <div class="flex items-center gap-3"><i class="${p.iconClass || 'fas fa-box'} text-2xl text-purple-700"></i><div><h3 class="font-bold">${escapeHtml(p.name)}</h3><p class="text-xs text-gray-500">${escapeHtml(p.description)}</p><span class="text-sm font-semibold">${p.price}</span></div></div>
+              <div class="flex gap-2"><button data-edit-id="${p.id}" class="edit-product-btn text-blue-600"><i class="fas fa-edit"></i> Edit</button><button data-delete-id="${p.id}" class="delete-product-btn text-red-500"><i class="fas fa-trash"></i> Delete</button></div>
+            </div>`).join('')}</div>
+          ${products.length === 0 ? '<div class="text-center p-6 bg-white rounded-xl">No products yet. Add your first offer!</div>' : ''}
+        </div>`;
+      attachEvents();
+      document.getElementById('quickAddProduct')?.addEventListener('click', () => {
+        const name = document.getElementById('prodName')?.value.trim();
+        const desc = document.getElementById('prodDesc')?.value.trim();
+        const price = document.getElementById('prodPrice')?.value.trim();
+        let icon = document.getElementById('prodIcon')?.value.trim();
+        if(!name || !desc || !price) { alert("Please fill name, description and price"); return; }
+        if(!icon) icon = "fas fa-cube";
+        addProduct({ name, description: desc, price, iconClass: icon, active: true });
+        renderStoreManager();
+      });
+      document.getElementById('addProductBtn')?.addEventListener('click', () => { document.getElementById('prodName')?.focus(); });
+      document.querySelectorAll('.edit-product-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-edit-id');
+          const prod = products.find(p => p.id === id);
+          if(prod) {
+            const newName = prompt("Edit product name", prod.name);
+            if(newName && newName.trim()) prod.name = newName.trim();
+            const newDesc = prompt("Edit description", prod.description);
+            if(newDesc && newDesc.trim()) prod.description = newDesc.trim();
+            const newPrice = prompt("Edit price", prod.price);
+            if(newPrice && newPrice.trim()) prod.price = newPrice.trim();
+            const newIcon = prompt("Icon class (FontAwesome, e.g., fas fa-rocket)", prod.iconClass);
+            if(newIcon && newIcon.trim()) prod.iconClass = newIcon.trim();
+            updateProduct(prod.id, { name: prod.name, description: prod.description, price: prod.price, iconClass: prod.iconClass });
+            renderStoreManager();
+          }
+        });
+      });
+      document.querySelectorAll('.delete-product-btn').forEach(btn => {
+        btn.addEventListener('click', () => { if(confirm("Delete this product from store?")) { deleteProduct(btn.getAttribute('data-delete-id')); renderStoreManager(); } });
+      });
     }
     
     function renderUserDashboard() {
       const myTasks = getTasksForUser(currentUser.email);
       const container = document.getElementById('views-container');
-      container.innerHTML = renderNav() + `<div class="max-w-6xl mx-auto"><div class="hero-office-img"><div class="hero-overlay"><h2>URBANAXIS</h2><p class="text-sm">Live Chat Support</p></div></div><div class="bw-card p-4 md:p-6 text-center mb-4"><h1 class="text-2xl font-bold">Welcome, ${currentUser.name}!</h1><button data-nav="chatView" class="btn-bw mt-3 text-sm">Start Live Chat</button></div><div class="grid grid-cols-2 gap-3 mb-4"><div class="bw-panel p-3 text-center"><i class="fas fa-tasks text-xl"></i><h3 class="text-xl font-bold">${myTasks.length}</h3><p class="text-xs">Tasks</p></div><div class="bw-panel p-3 text-center"><i class="fas fa-check-circle text-xl"></i><h3 class="text-xl font-bold">${myTasks.filter(t=>t.status==='completed').length}</h3><p class="text-xs">Done</p></div></div><div class="bw-card p-4"><h3 class="font-bold mb-2">My Tasks</h3>${myTasks.map(t => `<div class="bw-panel p-2 mb-2 flex justify-between items-center"><span class="text-sm">${t.title}</span><select data-update-status="${t.id}" class="text-xs border rounded p-1"><option ${t.status==='pending'?'selected':''} value="pending">Pending</option><option ${t.status==='in-progress'?'selected':''} value="in-progress">Progress</option><option ${t.status==='completed'?'selected':''} value="completed">Done</option></select></div>`).join('') || '<p class="text-gray-500 text-sm">No tasks</p>'}</div></div>`;
-      attachNavEvents(); document.querySelectorAll('[data-update-status]').forEach(select => select.addEventListener('change', (e) => { updateTask(select.getAttribute('data-update-status'), { status: e.target.value }); renderUserDashboard(); }));
+      container.innerHTML = renderNav() + `
+        <div class="max-w-5xl mx-auto">
+          <div class="hero-office-img"><div class="hero-overlay"><h2 class="text-4xl font-bold company-brand">URBANAXIS</h2><p class="text-lg mt-1">Your Digital Journey Starts Here</p></div></div>
+          <div class="bw-card p-6 mb-5 text-center"><h1 class="text-2xl font-bold">Welcome, ${currentUser.name}!</h1><p class="text-gray-600 mt-1">Explore our sell page for exclusive services & solutions</p></div>
+          <div class="sample-website-preview mb-5" onclick="alert('Website preview - Your professional site is ready!')"><i class="fas fa-globe text-3xl mb-2"></i><h3 class="font-bold text-lg">Your Website Preview</h3><p class="text-sm opacity-90">Click to view your professional business template</p></div>
+          <div class="grid grid-cols-2 gap-4 mb-5"><div class="bw-panel p-4 text-center"><i class="fas fa-tasks text-2xl"></i><h3 class="text-2xl font-bold">${myTasks.length}</h3><p>Tasks</p></div><div class="bw-panel p-4 text-center"><i class="fas fa-check-circle text-2xl"></i><h3 class="text-2xl font-bold">${myTasks.filter(t=>t.status==='completed').length}</h3><p>Completed</p></div></div>
+          <div class="bw-card p-5"><h3 class="font-bold text-lg mb-3"><i class="fas fa-list-check mr-2"></i>My Tasks</h3>${myTasks.map(t => `<div class="flex justify-between items-center border-b py-2"><span>${t.title}</span><select data-update-status="${t.id}" class="text-sm border rounded p-1"><option ${t.status==='pending'?'selected':''} value="pending">Pending</option><option ${t.status==='in-progress'?'selected':''} value="in-progress">In Progress</option><option ${t.status==='completed'?'selected':''} value="completed">Done</option></select></div>`).join('') || '<p class="text-gray-500">No tasks assigned</p>'}</div>
+        </div>`;
+      attachEvents();
+      document.querySelectorAll('[data-update-status]').forEach(select => select.addEventListener('change', (e) => { updateTask(select.getAttribute('data-update-status'), { status: e.target.value }); renderUserDashboard(); }));
     }
     
-    function renderAdminDashboard() {
-      const allUsers = getAllUsersExcludingAdmins();
+    // ========== CHAT VIEW (unchanged but enhanced with store context) ==========
+    function renderChatView() {
+      const isAdmin = currentUser.role === 'admin';
+      let adminPartners = getAllAdmins();
+      let userPartners = getAllUsers().filter(u => u.email !== currentUser.email);
+      let partners = isAdmin ? getAllUsers() : (chatType === 'admin' ? adminPartners : userPartners);
+      if(!activeChatPartner && partners.length) activeChatPartner = partners[0].email;
       const container = document.getElementById('views-container');
-      container.innerHTML = renderNav() + `<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5"><div class="bw-panel p-3 text-center"><i class="fas fa-users"></i><h3 class="text-xl font-bold">${allUsers.length}</h3><p class="text-xs">Users</p></div><div class="bw-panel p-3 text-center"><i class="fas fa-tasks"></i><h3 class="text-xl font-bold">${tasks.length}</h3><p class="text-xs">Tasks</p></div><div class="bw-panel p-3 text-center"><i class="fas fa-comment"></i><h3 class="text-xl font-bold">${messages.length}</h3><p class="text-xs">Messages</p></div><div class="bw-panel p-3 text-center"><i class="fas fa-bell"></i><h3 class="text-xl font-bold" id="totalUnread">0</h3><p class="text-xs">Unread</p></div></div><div class="flex justify-between mb-3"><h2 class="font-bold">Users</h2><button id="globalAddTaskBtn" class="btn-bw text-sm px-3 py-1">+ Task</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${allUsers.map(u => { const unread = getUnreadCount(currentUser.email, u.email); return `<div class="user-card p-3"><div class="flex justify-between"><div><h3 class="font-bold text-sm">${u.name}</h3><p class="text-xs text-gray-500">${u.email}</p><span class="stage-badge">${u.stage}</span> ${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ''}</div><div><button data-chat-user="${u.email}" class="text-green-600 mr-2"><i class="fas fa-comment"></i></button><button data-view-user="${u.email}" class="text-blue-600"><i class="fas fa-eye"></i></button></div></div><div class="mt-2 flex gap-1"><button data-move-stage="${u.email}" data-to="interested" class="btn-outline-bw text-xs py-0.5 px-2">Interested</button><button data-move-stage="${u.email}" data-to="working" class="btn-outline-bw text-xs py-0.5 px-2">Working</button><button data-move-stage="${u.email}" data-to="complete" class="btn-outline-bw text-xs py-0.5 px-2">Complete</button></div></div>`; }).join('')}</div>`;
-      attachNavEvents(); document.getElementById('totalUnread').innerText = allUsers.reduce((s,u) => s + getUnreadCount(currentUser.email, u.email), 0);
-      document.querySelectorAll('[data-move-stage]').forEach(btn => btn.addEventListener('click', () => { updateUserStage(btn.getAttribute('data-move-stage'), btn.getAttribute('data-to')); renderAdminDashboard(); }));
-      document.querySelectorAll('[data-chat-user]').forEach(btn => btn.addEventListener('click', () => { activeChatPartner = btn.getAttribute('data-chat-user'); markMessagesAsRead(currentUser.email, activeChatPartner); setView('chatView'); }));
-      document.querySelectorAll('[data-view-user]').forEach(btn => btn.addEventListener('click', () => setView('userDetail', btn.getAttribute('data-view-user'))));
-      document.getElementById('globalAddTaskBtn')?.addEventListener('click', () => { const email = prompt("Enter user email to assign task:"); if(email && findUserByEmail(email)) { const title = prompt("Task title:"); if(title) createTask({ assignedTo: email, title, description: "", dueDate: "", status: "pending" }); renderAdminDashboard(); } else if(email) alert("User not found"); });
+      container.innerHTML = renderNav() + `
+        <div class="bw-card p-4">
+          ${!isAdmin ? `<div class="flex gap-2 mb-4 border-b pb-2"><button id="chatAdminTab" class="chat-tab ${chatType === 'admin' ? 'active bg-black text-white' : 'bg-gray-100'} px-4 py-2 rounded-full"><i class="fas fa-headset mr-2"></i>Chat with Admin</button><button id="chatUsersTab" class="chat-tab ${chatType === 'users' ? 'active bg-black text-white' : 'bg-gray-100'} px-4 py-2 rounded-full"><i class="fas fa-users mr-2"></i>Chat with Users</button></div>` : ''}
+          <div class="flex flex-col md:flex-row gap-4 h-[65vh]"><div class="md:w-1/3 bg-gray-50 rounded-xl p-2 overflow-y-auto"><h3 class="font-bold mb-2">${isAdmin ? 'Customers' : (chatType === 'admin' ? 'Support Team' : 'Other Users')}</h3>${partners.map(p => { const unread = getUnreadCount(currentUser.email, p.email); return `<div data-chat-partner="${p.email}" class="chat-list-item flex justify-between items-center ${activeChatPartner === p.email ? 'active' : ''}"><div><span class="text-xl mr-2">${p.avatar || '👤'}</span><span class="font-medium">${p.name}</span><div class="text-xs text-gray-400">${p.email}</div></div>${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ''}</div>`; }).join('')}</div>
+            <div class="md:w-2/3 flex flex-col bg-white rounded-xl p-3"><div class="pb-2 border-b mb-2 flex justify-between"><span class="font-semibold">Chat with <span id="chatPartnerName" class="font-bold">${activeChatPartner ? (findUserByEmail(activeChatPartner)?.name || activeChatPartner) : 'Select'}</span></span><span class="text-xs text-green-600"><i class="fas fa-circle"></i> Live</span></div><div id="chatMessagesArea" class="flex-1 overflow-y-auto space-y-2 p-2 bg-gray-50 rounded-xl" style="min-height: 350px;"></div><div class="flex gap-2 mt-3"><input type="text" id="messageInput" placeholder="Type your message..." class="flex-1 border rounded-xl px-3 py-2 text-sm" autocomplete="off"><button id="sendMsgBtn" class="btn-bw px-4 py-2 text-sm"><i class="fas fa-paper-plane"></i> Send</button></div></div></div>
+        </div>`;
+      attachEvents();
+      if(!isAdmin){ document.getElementById('chatAdminTab')?.addEventListener('click', () => { chatType = 'admin'; activeChatPartner = getAllAdmins()[0]?.email; renderChatView(); }); document.getElementById('chatUsersTab')?.addEventListener('click', () => { chatType = 'users'; activeChatPartner = getAllUsers().filter(u => u.email !== currentUser.email)[0]?.email; renderChatView(); }); }
+      document.querySelectorAll('[data-chat-partner]').forEach(el => { el.addEventListener('click', () => { activeChatPartner = el.getAttribute('data-chat-partner'); markMessagesAsRead(currentUser.email, activeChatPartner); renderChatView(); }); });
+      function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+      function loadMessages() { if(!activeChatPartner) return; const msgs = getConversation(currentUser.email, activeChatPartner); const area = document.getElementById('chatMessagesArea'); const partnerName = findUserByEmail(activeChatPartner)?.name; if(document.getElementById('chatPartnerName')) document.getElementById('chatPartnerName').innerText = partnerName || activeChatPartner; if(area) { area.innerHTML = msgs.map(m => `<div class="flex ${m.senderId === currentUser.email ? 'justify-end' : 'justify-start'}"><div class="${m.senderId === currentUser.email ? 'chat-bubble-user' : 'chat-bubble-other'}"><div class="text-sm">${escapeHtml(m.message)}</div><div class="text-[10px] opacity-70 mt-1 text-right">${new Date(m.timestamp).toLocaleTimeString()}</div></div></div>`).join(''); area.scrollTop = area.scrollHeight; } if(activeChatPartner) markMessagesAsRead(currentUser.email, activeChatPartner); }
+      document.getElementById('sendMsgBtn')?.addEventListener('click', () => { const inp = document.getElementById('messageInput'); if(inp?.value.trim() && activeChatPartner) { sendMessage(currentUser.email, activeChatPartner, inp.value); inp.value = ''; loadMessages(); } });
+      document.getElementById('messageInput')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') document.getElementById('sendMsgBtn')?.click(); });
+      loadMessages(); if(chatPollInterval) clearInterval(chatPollInterval); chatPollInterval = setInterval(() => { if(currentView === 'chatView') loadMessages(); }, 1800);
     }
     
-    function renderUserDetailPage(userEmail) {
-      const user = findUserByEmail(userEmail);
-      if(!user) return setView('adminDashboard');
-      const container = document.getElementById('views-container');
-      container.innerHTML = renderNav() + `<div class="max-w-2xl mx-auto"><button id="backBtn" class="text-gray-600 mb-3 text-sm"><i class="fas fa-arrow-left"></i> Back</button><div class="bw-card p-4"><div class="flex items-center gap-4"><div class="w-14 h-14 bg-black rounded-full flex items-center justify-center"><i class="fas fa-user-circle text-2xl text-white"></i></div><div><h2 class="text-xl font-bold">${user.name}</h2><p class="text-xs text-gray-500">${user.email}</p><p class="text-xs">📞 ${user.phone || 'No phone'}</p><span class="stage-badge">${user.stage}</span></div></div></div><div class="mt-3 flex gap-2"><button data-chat-user="${userEmail}" class="btn-bw flex-1 text-sm"><i class="fas fa-comment"></i> Chat</button><button data-move-stage="${userEmail}" data-to="working" class="btn-outline-bw flex-1 text-sm">Move to Working</button></div></div>`;
-      attachNavEvents(); document.getElementById('backBtn')?.addEventListener('click', () => setView('adminDashboard')); document.querySelector('[data-chat-user]')?.addEventListener('click', () => { activeChatPartner = userEmail; markMessagesAsRead(currentUser.email, activeChatPartner); setView('chatView'); }); document.querySelectorAll('[data-move-stage]').forEach(btn => btn.addEventListener('click', () => { updateUserStage(btn.getAttribute('data-move-stage'), btn.getAttribute('data-to')); renderUserDetailPage(userEmail); }));
-    }
-    
-    function renderProfileView() {
-      const container = document.getElementById('views-container');
-      container.innerHTML = renderNav() + `<div class="max-w-2xl mx-auto"><div class="bw-card p-5 text-center"><div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-3"><i class="fas fa-user-circle text-3xl text-white"></i></div><h2 class="text-xl font-bold">${currentUser.name}</h2><p class="text-xs text-gray-500">${currentUser.email}</p><div class="mt-4 text-left"><div class="profile-detail-card text-sm"><i class="fas fa-phone mr-2"></i> ${currentUser.phone || 'Not provided'}</div><div class="profile-detail-card text-sm"><i class="fas fa-map-marker-alt mr-2"></i> ${currentUser.location || 'Not set'}</div></div><button id="editProfileBtn" class="btn-bw mt-4 text-sm">Edit Profile</button></div></div>`;
-      attachNavEvents(); document.getElementById('editProfileBtn')?.addEventListener('click', () => { const np = prompt("Phone number", currentUser.phone || ""); const nl = prompt("Location", currentUser.location || ""); if(np || nl) { updateUserProfile(currentUser.email, { phone: np, location: nl }); currentUser.phone = np; currentUser.location = nl; localStorage.setItem('currentUser', JSON.stringify(currentUser)); renderProfileView(); } });
-    }
-    function renderTaskManager() { const container = document.getElementById('views-container'); container.innerHTML = renderNav() + `<div class="bw-card p-4"><h2 class="font-bold mb-2">All Tasks</h2>${tasks.map(t => { const u = findUserByEmail(t.assignedTo); return `<div class="bw-panel p-2 mb-2">${t.title} - ${u?.name || t.assignedTo} (${t.status})</div>`; }).join('') || '<p>No tasks</p>'}</div>`; attachNavEvents(); }
-    
-    function attachNavEvents() { document.querySelectorAll('[data-nav]').forEach(btn => btn.addEventListener('click', () => setView(btn.getAttribute('data-nav')))); document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; localStorage.removeItem('currentUser'); if(chatPollInterval) clearInterval(chatPollInterval); setView('login'); }); }
-    
-    function setView(viewName, param = null) {
-      currentView = viewName;
-      if(viewName === 'login') setAuthBackground(true); else setAuthBackground(false);
-      if(viewName === 'login') renderAuthPage();
-      else if(!currentUser) renderAuthPage();
-      else if(viewName === 'userDashboard') renderUserDashboard();
-      else if(viewName === 'adminDashboard') renderAdminDashboard();
-      else if(viewName === 'chatView') renderChatView();
-      else if(viewName === 'profileView') renderProfileView();
-      else if(viewName === 'taskManager' && currentUser.role === 'admin') renderTaskManager();
-      else if(viewName === 'userDetail' && param) renderUserDetailPage(param);
-      else renderUserDashboard();
-    }
-    
-    const stored = localStorage.getItem('currentUser');
-    if(stored) { currentUser = JSON.parse(stored); setView(currentUser.role === 'admin' ? 'adminDashboard' : 'userDashboard'); }
+    function renderAdminDashboard() { const allUsers = getAllUsers(); const container = document.getElementById('views-container'); container.innerHTML = renderNav() + `<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6"><div class="bw-panel p-4 text-center"><i class="fas fa-users text-2xl"></i><h3 class="text-2xl font-bold">${allUsers.length}</h3><p>Total Users</p></div><div class="bw-panel p-4 text-center"><i class="fas fa-tasks text-2xl"></i><h3 class="text-2xl font-bold">${tasks.length}</h3><p>Tasks</p></div><div class="bw-panel p-4 text-center"><i class="fas fa-store text-2xl"></i><h3 class="text-2xl font-bold">${products.length}</h3><p>Products</p></div><div class="bw-panel p-4 text-center"><i class="fas fa-comment text-2xl"></i><h3 class="text-2xl font-bold">${messages.length}</h3><p>Messages</p></div><div class="bw-panel p-4 text-center"><i class="fas fa-bell text-2xl"></i><h3 class="text-2xl font-bold" id="totalUnread">0</h3><p>Unread</p></div></div><div class="flex justify-between items-center mb-4 flex-wrap gap-2"><h2 class="text-xl font-bold">User Management</h2><button id="quickTaskBtn" class="btn-bw text-sm"><i class="fas fa-plus"></i> Assign Task</button></div><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">${allUsers.map(u => { const unread = getUnreadCount(currentUser.email, u.email); return `<div class="user-card"><div class="flex justify-between items-start"><div><span class="text-2xl mr-2">${u.avatar || '👤'}</span><h3 class="font-bold inline">${u.name}</h3><p class="text-sm text-gray-500">${u.email}</p><span class="stage-badge">${u.stage}</span> ${unread > 0 ? `<span class="unread-badge">${unread} new</span>` : ''}</div><div><button data-chat-user="${u.email}" class="text-green-600 mr-2 text-lg" title="Live Chat"><i class="fas fa-comment-dots"></i></button><button data-view-user="${u.email}" class="text-blue-600 text-lg" title="View Profile"><i class="fas fa-eye"></i></button><button data-delete-user="${u.email}" class="text-red-500 text-lg" title="Delete"><i class="fas fa-trash"></i></button></div></div><div class="mt-3 flex flex-wrap gap-2"><button data-move="${u.email}" data-stage="interested" class="btn-outline-bw text-xs py-1 px-2">Interested</button><button data-move="${u.email}" data-stage="working" class="btn-outline-bw text-xs py-1 px-2">Working</button><button data-move="${u.email}" data-stage="complete" class="btn-outline-bw text-xs py-1 px-2">Complete</button></div></div>`; }).join('')}</div>`; attachEvents(); document.getElementById('totalUnread').innerText = allUsers.reduce((s,u) => s + getUnreadCount(currentUser.email, u.email), 0); document.querySelectorAll('[data-move]').forEach(btn => btn.addEventListener('click', () => { updateUserStage(btn.getAttribute('data-move'), btn.getAttribute('data-stage')); renderAdminDashboard(); })); document.querySelectorAll('[data-chat-user]').forEach(btn => btn.addEventListener('click', () => { activeChatPartner = btn.getAttribute('data-chat-user'); markMessagesAsRead(currentUser.email, activeChatPartner); setView('chatView'); })); document.querySelectorAll('[data-view-user]').forEach(btn => btn.addEventListener('click', () => setView('userDetail', btn.getAttribute('data-view-user')))); document.querySelectorAll('[data-delete-user]').forEach(btn => btn.addEventListener('click', () => { if(confirm('Delete user?')) { const email = btn.getAttribute('data-delete-user'); const idx = users.findIndex(u => u.email === email); if(idx !== -1 && users[idx].role !== 'admin') { users.splice(idx,1); saveUsers(); renderAdminDashboard(); } } })); document.getElementById('quickTaskBtn')?.addEventListener('click', () => { const email = prompt("User email:"); if(email && findUserByEmail(email)) { const title = prompt("Task title:"); if(title) createTask({ assignedTo: email, title, description: "", dueDate: "", status: "pending" }); renderAdminDashboard(); } else if(email) alert("User not found"); }); }
+    function renderUserDetailPage(email) { const user = findUserByEmail(email); if(!user) return setView('adminDashboard'); const container = document.getElementById('views-container'); container.innerHTML = renderNav() + `<div class="max-w-2xl mx-auto"><button id="backBtn" class="text-gray-600 mb-3"><i class="fas fa-arrow-left"></i> Back</button><div class="bw-card p-5"><div class="flex items-center gap-4"><div class="w-16 h-16 bg-black rounded-full flex items-center justify-center text-3xl">${user.avatar || '👤'}</div><div><h2 class="text-2xl font-bold">${user.name}</h2><p>${user.email}</p><p class="text-sm">📞 ${user.phone || 'No phone'}</p><p class="text-sm">📍 ${user.location || 'No location'}</p><span class="stage-badge">${user.stage}</span></div></div></div><div class="mt-4"><button data-chat-user="${email}" class="btn-bw w-full"><i class="fas fa-comment"></i> Live Chat</button></div></div>`; attachEvents(); document.getElementById('backBtn')?.addEventListener('click', () => setView('adminDashboard')); document.querySelector('[data-chat-user]')?.addEventListener('click', () => { activeChatPartner = email; markMessagesAsRead(currentUser.email, activeChatPartner); setView('chatView'); }); }
+    function renderProfileView() { const container = document.getElementById('views-container'); container.innerHTML = renderNav() + `<div class="max-w-2xl mx-auto"><div class="bw-card p-6 text-center"><div class="w-24 h-24 bg-black rounded-full mx-auto flex items-center justify-center text-5xl">${currentUser.avatar || '👤'}</div><h2 class="text-2xl font-bold mt-3">${currentUser.name}</h2><p class="text-gray-500">${currentUser.email} • ${currentUser.role === 'admin' ? 'Administrator' : 'Customer'}</p><div class="mt-4 text-left"><div class="bg-gray-50 p-3 rounded-xl mb-2"><i class="fas fa-phone mr-2"></i> ${currentUser.phone || 'Not provided'}</div><div class="bg-gray-50 p-3 rounded-xl"><i class="fas fa-map-marker-alt mr-2"></i> ${currentUser.location || 'Not provided'}</div></div><button id="editProfileBtn" class="btn-bw mt-4">Edit Profile</button></div></div>`; attachEvents(); document.getElementById('editProfileBtn')?.addEventListener('click', () => { const np = prompt("Phone", currentUser.phone || ""); const nl = prompt("Location", currentUser.location || ""); if(np || nl) { updateUserProfile(currentUser.email, { phone: np, location: nl }); currentUser.phone = np; currentUser.location = nl; localStorage.setItem('currentUser', JSON.stringify(currentUser)); renderProfileView(); } }); }
+    function renderTaskManager() { const container = document.getElementById('views-container'); container.innerHTML = renderNav() + `<div class="bw-card p-5"><h2 class="text-xl font-bold mb-3">All Tasks</h2>${tasks.map(t => { const u = findUserByEmail(t.assignedTo); return `<div class="border-b py-2 flex justify-between"><span>${t.title}</span><span class="text-sm">${u?.name || t.assignedTo} (${t.status})</span></div>`; }).join('') || '<p>No tasks'}</div>`; attachEvents(); }
+    function attachEvents() { document.querySelectorAll('[data-nav]').forEach(btn => btn.addEventListener('click', () => setView(btn.getAttribute('data-nav')))); document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; localStorage.removeItem('currentUser'); if(chatPollInterval) clearInterval(chatPollInterval); setView('login'); }); }
+    function setView(view, param = null) { currentView = view; if(view === 'login') renderAuthPage(); else if(!currentUser) renderAuthPage(); else if(view === 'userDashboard') renderUserDashboard(); else if(view === 'adminDashboard') renderAdminDashboard(); else if(view === 'chatView') renderChatView(); else if(view === 'profileView') renderProfileView(); else if(view === 'taskManager' && currentUser.role === 'admin') renderTaskManager(); else if(view === 'userDetail' && param) renderUserDetailPage(param); else if(view === 'storeManager' && currentUser.role === 'admin') renderStoreManager(); else if(view === 'userStore' && currentUser.role === 'user') renderUserStore(); else renderUserDashboard(); }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+    const storedUser = localStorage.getItem('currentUser');
+    if(storedUser) { currentUser = JSON.parse(storedUser); setView(currentUser.role === 'admin' ? 'adminDashboard' : 'userDashboard'); }
     else setView('login');
   </script>
 </body>
